@@ -20,9 +20,9 @@ def make_soup(url):
     soup = BeautifulSoup(response.text, 'html.parser')
     return soup
 
-def github_HP_urls():
+def github_geology_urls():
     '''
-    This function scrapes all of the Harry Potter urls from
+    This function scrapes all of the Geology urls from
     the github search page and returns a list of urls.
     '''
     # get the first 100 pages to allow for those that don't have readme or language
@@ -32,7 +32,7 @@ def github_HP_urls():
     for p in pages:
         
         # format string of the base url for the main github search page we are using to update with page number
-        url = f'https://github.com/search?p={p}&q=harry+potter&type=Repositories'
+        url = f'https://github.com/search?p={p}&?q=geology&type=Repositories'
 
         # Make request and soup object using helper
         soup = make_soup(url)
@@ -45,7 +45,7 @@ def github_HP_urls():
         page_urls = list(page_urls)
         # append the list from the page to the full list to return
         urls.append(page_urls)
-        time.sleep(5)
+        time.sleep(2)
         
     # flatten the urls list
     urls = [y for x in urls for y in x]
@@ -73,7 +73,7 @@ def github_urls_single_page():
     return urls
 # this gets 1st 10 urls, will need to get next 10 pages
 
-def get_github_HPresults(cached=False):
+def get_github_geology_results(cached=False):
     '''
     This function with default cached == False does a fresh scrape of github pages returned from
     search of 'environmental' and writes the returned df to a json file.
@@ -81,12 +81,12 @@ def get_github_HPresults(cached=False):
     '''
     # option to read in a json file instead of scrape for df
     if cached == True:
-        df = pd.read_json('readmes.json')
+        df = pd.read_json('geology_readme.json')
         
     # cached == False completes a fresh scrape for df    
     else:
         # get url list
-        url_list = github_HP_urls()
+        url_list = github_geology_urls()
 
         # Set base_url that will be used in get request
         base_url = 'https://github.com'
@@ -125,7 +125,7 @@ def get_github_HPresults(cached=False):
         df = pd.DataFrame(readmes)
 
         # Write df to a json file for faster access
-        df.to_json('readmes.json')
+        df.to_json('geology_readme.json')
 
     return df
     # 339 observations with 50 pgs
