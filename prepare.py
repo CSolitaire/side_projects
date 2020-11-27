@@ -133,6 +133,6 @@ def prep_data(df, column, extra_words=[], exclude_words=[]):
     df['doc_length'] = [len(wordlist) for wordlist in df.words]
     
     # removing unpopular languages 
-    language_list = ['JavaScript', 'Java', 'HTML', 'Python']
-    df = df[df.language.isin(language_list)]
+    #language_list = ['JavaScript', 'Java', 'HTML', 'Python']
+    #df = df[df.language.isin(language_list)]
     return df
