@@ -1,3 +1,3 @@
 ## Side Project Folder
 
-- 1. Web Scrapper
+- 1. Setup for Web Scraping Project
