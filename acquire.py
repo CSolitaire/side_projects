@@ -32,7 +32,7 @@ def github_geology_urls():
     for p in pages:
         
         # format string of the base url for the main github search page we are using to update with page number
-        url = f'https://github.com/search?p={p}&?q=geology&s=updated&type=Repositories'
+        url = f'https://github.com/search?{p}o=desc&q=geology&s=updated&type=Repositories'
 
         # Make request and soup object using helper
         soup = make_soup(url)
@@ -53,25 +53,25 @@ def github_geology_urls():
 
 
 
-# def github_urls_single_page():
-#     '''
-#     This function scrapes all of the evironmental urls from
-#     the github first search page and returns a list of urls.
-#     '''
-#     # The base url for the main github search page we are using
-#     url = 'https://github.com/search?o=desc&p=1&q=environmental&s=&type=Repositories'
+def github_urls_single_page():
+    '''
+    This function scrapes all of the evironmental urls from
+    the github first search page and returns a list of urls.
+    '''
+    # The base url for the main github search page we are using
+    url = 'https://github.com/search?o=desc&p=1&q=environmental&s=&type=Repositories'
     
-#     # Make request and soup object using helper
-#     soup = make_soup(url)
+    # Make request and soup object using helper
+    soup = make_soup(url)
     
-#     # Create a list of the anchor elements that hold the urls.
-#     urls_list = soup.find_all('a', class_='v-align-middle')
-#     # for each url in the find all list get just the 'href' link
-#     urls = {link.get('href') for link in urls_list}
-#     # make a list of these urls
-#     urls = list(urls)
-#     return urls
-# this gets 1st 10 urls, will need to get next 10 pages
+    # Create a list of the anchor elements that hold the urls.
+    urls_list = soup.find_all('a', class_='v-align-middle')
+    # for each url in the find all list get just the 'href' link
+    urls = {link.get('href') for link in urls_list}
+    # make a list of these urls
+    urls = list(urls)
+    return urls
+this gets 1st 10 urls, will need to get next 10 pages
 
 def get_github_geology_results(cached=False):
     '''
