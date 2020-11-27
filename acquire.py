@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import datetime as dt
 from requests import get
 from bs4 import BeautifulSoup
 import os
@@ -26,7 +27,7 @@ def github_geology_urls():
     the github search page and returns a list of the most recently updated Geology urls.
     '''
     # get the first 100 pages to allow for those that don't have readme or language
-    pages = range(1, 101)
+    pages = range(1, 10)
     urls = []
     
     for p in pages:
@@ -71,7 +72,7 @@ def github_urls_single_page():
     # make a list of these urls
     urls = list(urls)
     return urls
-this gets 1st 10 urls, will need to get next 10 pages
+
 
 def get_github_geology_results(cached=False):
     '''
@@ -116,7 +117,7 @@ def get_github_geology_results(cached=False):
                 # anything else useful on the page?
 
                 # Create a dictionary holding the title and content for each blog
-                readme = {'language': language, 'content': content}
+                readme = {'language': language, 'content': content, 'date': dt.datetime.now()}
 
                 # Add each dictionary to the articles list of dictionaries
                 readmes.append(readme)
