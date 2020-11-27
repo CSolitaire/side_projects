@@ -27,7 +27,7 @@ def github_geology_urls():
     the github search page and returns a list of the most recently updated Geology urls.
     '''
     # get the first 100 pages to allow for those that don't have readme or language
-    pages = range(1, 10)
+    pages = range(1, 500)
     urls = []
     
     for p in pages:
