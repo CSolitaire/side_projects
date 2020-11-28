@@ -46,7 +46,7 @@ def github_geology_urls():
         page_urls = list(page_urls)
         # append the list from the page to the full list to return
         urls.append(page_urls)
-        time.sleep(2)
+        time.sleep(5)
         
     # flatten the urls list
     urls = [y for x in urls for y in x]
