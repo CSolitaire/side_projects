@@ -56,7 +56,16 @@ def lemmatize(text):
 
 def remove_stopwords(text, extra_words=[], exclude_words=["accuracy","accurate","acknowledgement",
     "acquired","adhere","adheres","along","also","accessing","provided","directory", "datasets",
-    "including","pip","problem","pull","python"]):
+    "including","pip","problem","pull","python" "according","account","across","addition","additional","aim",
+    "anaconda","analyse","analysed","analysis","andor","answer","according","public","proxy","properly","prompt","program",
+    "produce", "produced","reference","need","optimization","viewer","open","norequestrendermode","preform","performed","point","pointcloud",
+    "question", "install","data","import","using","please","different","installation","preprocessing","library","type","implemented","minimum","github",
+    "run","using","file","license","result","record","possible","number","could","see","use","source","define","parameter","geology","disable",
+    "limit","inspector","quality","default","display", "activate","alternative","anacona","associated","assumption","attempt","author","automated",
+    "automatic","available","purpose","published","publically","prevented","different","navigation","quality",'nolimit',"package",
+    "al","application","assetids","based","better","bias","biased","birthdeath","raw","rather","present","prerequisitewindowv","particular",
+    "partially","oxford","requires","happy","request","report","high","provide","project","processing","potential","calculated","cannot","capture",
+    "carried","cause",'cc','cd']):
     '''
     Removes stopwords from text, allows for additional words to exclude, or words to not exclude
     '''
