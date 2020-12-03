@@ -54,10 +54,9 @@ def lemmatize(text):
     article_lemmatized = ' '.join(lemmas)
     return article_lemmatized
 
-def remove_stopwords(text, extra_words=[], exclude_words=["accuracy","accurate","acknowledgement","acquired",
-    "adhere","adheres","along","also","accessing","provided",
-    "directory", "datasets","including","pip","problem","pull",
-    "python"]):
+def remove_stopwords(text, extra_words=[], exclude_words=["accuracy","accurate","acknowledgement",
+    "acquired","adhere","adheres","along","also","accessing","provided","directory", "datasets",
+    "including","pip","problem","pull","python"]):
     '''
     Removes stopwords from text, allows for additional words to exclude, or words to not exclude
     '''
@@ -65,10 +64,10 @@ def remove_stopwords(text, extra_words=[], exclude_words=["accuracy","accurate",
     stopword_list = stopwords.words('english')
     # add additional stopwords
     for word in extra_words:
-        stopword_list.append(word)
+        stopword_list.remove(word)
     # remove stopwords to exclude from stopword list
     for word in exclude_words:
-        stopword_list.remove(word)
+        stopword_list.append(word)
     # split the string into words
     words = text.split()
     # filter the words
@@ -79,65 +78,28 @@ def remove_stopwords(text, extra_words=[], exclude_words=["accuracy","accurate",
     article_without_stopwords = ' '.join(filtered_words)
     return article_without_stopwords
 
-### instructor version
-def prep_article_data(df, column, extra_words=[], exclude_words=[]):
-    '''
-    This function take in a df and the string name for a text column with 
-    option to pass lists for extra_words and exclude_words and
-    returns a df with the text article title, original text, stemmed text,
-    lemmatized text, cleaned, tokenized, & lemmatized text with stopwords removed.
-    '''
-    df['clean'] = df[column].apply(basic_clean)\
-                            .apply(tokenize)\
-                            .apply(remove_stopwords, 
-                                   extra_words=extra_words, 
-                                   exclude_words=exclude_words)\
-                            .apply(lemmatize)
-    
-    df['stemmed'] = df[column].apply(basic_clean).apply(stem)
-    
-    df['lemmatized'] = df[column].apply(basic_clean).apply(lemmatize)
-    
-    return df[['topic', 'title', column, 'stemmed', 'lemmatized', 'clean']]
 
 ###### my GitHub version
-def prep_data(df, column, extra_words=[], exclude_words=[]):
+def prep_data(df, column):
     '''
     This function take in a df and the string name for a text column with 
     option to pass lists for extra_words and exclude_words and
     returns a df with the text article title, original text, stemmed text,
     lemmatized text, cleaned, tokenized, & lemmatized text with stopwords removed.
     '''
-    # create column with text cleaned
-    df['clean'] = df[column].apply(basic_clean)\
-                            .apply(tokenize)\
-                            .apply(remove_stopwords, 
-                                   extra_words=extra_words, 
-                                   exclude_words=exclude_words)
-    # basic clean, tokenize, remove_stopwords, and stem text
-    df['stemmed'] = df[column].apply(basic_clean)\
-                            .apply(tokenize)\
-                            .apply(remove_stopwords, 
-                                   extra_words=extra_words, 
-                                   exclude_words=exclude_words)\
-                            .apply(stem)
-    # basic clean, tokenize, remove_stopwords, and lemmatize text
-    df['lemmatized'] = df[column].apply(basic_clean)\
-                            .apply(tokenize)\
-                            .apply(remove_stopwords, 
-                                   extra_words=extra_words, 
-                                   exclude_words=exclude_words)\
-                            .apply(lemmatize)
-
-    # add a column with a list of words
-    words = [re.sub(r'([^a-z0-9\s]|\s.\s)', '', doc).split() for doc in df.lemmatized]
-
-    # column name will be words, and the column will contain lists of the words in each doc
+    # Formatts language makes it easier to read
+    df['text_cleaned'] = df.content.apply(basic_clean)
+    df['text_tokenized'] = df.text_cleaned.apply(tokenize)
+    df['text_lemmatized'] = df.text_tokenized.apply(lemmatize)
+    df['text_filtered'] = df.text_lemmatized.apply(remove_stopwords)
+    # Add column with list of words
+    words = [re.sub(r'([^a-z0-9\s]|\s.\s)', '', doc).split() for doc in df.text_filtered]
     df = pd.concat([df, pd.DataFrame({'words': words})], axis=1)
-    # add column with number of words in readme content
+    # Adds colum with lenght of word list
     df['doc_length'] = [len(wordlist) for wordlist in df.words]
-    
-    # removing unpopular languages 
+      # removing unpopular languages 
     #language_list = ['JavaScript', 'Java', 'HTML', 'Python']
     #df = df[df.language.isin(language_list)]
     return df
+
+  
