@@ -34,9 +34,9 @@ def create_lang_word_list(train_exp):
     creates a list of words in the readme text by language and removes single letter words
     '''
     # create a list of words for each language category
-    jupyter_words = ' '.join(train_exp[train_exp.language=='Jupyter'].lemmatized)
-    js_words = ' '.join(train_exp[train_exp.language=='JavaScript'].lemmatized)
-    r_words = ' '.join(train_exp[train_exp.language=='R'].lemmatized)
+    jupyter_words = ' '.join(train_exp[train_exp.language=='Jupyter'].text_filtered)
+    js_words = ' '.join(train_exp[train_exp.language=='JavaScript'].text_filtered)
+    r_words = ' '.join(train_exp[train_exp.language=='R'].text_filtered)
 
     # remove single letter words to reduce noise
     jupyter_words = re.sub(r'\s.\s', '', jupyter_words)

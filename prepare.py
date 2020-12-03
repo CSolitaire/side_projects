@@ -65,7 +65,34 @@ def remove_stopwords(text, extra_words=[], exclude_words=["accuracy","accurate",
     "automatic","available","purpose","published","publically","prevented","different","navigation","quality",'nolimit',"package",
     "al","application","assetids","based","better","bias","biased","birthdeath","raw","rather","present","prerequisitewindowv","particular",
     "partially","oxford","requires","happy","request","report","high","provide","project","processing","potential","calculated","cannot","capture",
-    "carried","cause",'cc','cd']):
+    "carried","cause",'cc','cd',"python","conda","variety","notebook","work","image","sample","check","running","console","example","easily","map",
+    "sampling","true","method","version","script","many","set","url","ngm","npm",'swissgeol','swisstopo','list', 'behavior','git','licencemd',
+    'restrict','swiss','mind',"initialscreenspaceerror","gdal","following","welcomed","terminal","workflow","cloud","review","jupyter","laboratory",
+    "technique","navigate","test","time","used","pde","reforester","database","past","research","section","visual","developingmd","ownterrainfalse",
+    "widget","json","cpu",'new','welcome','id',"gdal","following","welcomed","terminal","workflow","cloud","review","jupyter","laboratory",
+    "technique","navigate","test","time","used","pde","reforester","database","past","research","section","visual","developingmd","ownterrainfalse",
+    "widget","json","cpu",'new','welcome','id',"integrated","opening","learning","code","marker","corrected","trying","citing","though",'refer',
+    "history",'gnu',"specie",'dataimporterr','dissertation','wa','httpsbetaswissgeolch','layout','software','swissrectangle','localhost','except',
+    'start','httplocalhost','keyboard','disables','us','machine','server','documentation','testing','integration','cool','create','stay','due','study',
+    'estimate','pattern','general','error','enforce','made','started','local','clone','modify','sphere','coma','getting','nolimitfalse','rectangle',
+    'maximumscreenspaceerror',"io","fix","userhylite","dimensionality","ioloadtestdatahypercloudplycloudquickplotcloudheadergetcamera",
+    "cite","hylitergb","specific","thiele","lib","pdes","included","occurrence","recent","must","significant","texture",
+    "httpsopengameartorgcontenttemplateorangetexturepack","swissrectanglefalse","note","launch", "conventionally","mark","technology","fast","opencv",
+    "marking","take","efficiently","sure","make","solved","unsupervised","know","long","matplotlib","numpy","created","imagine",'prerequisitewindowv',
+    'longheld',"word","phytools","placed","eg","indicate","complete","received","term","results","format","desired","templatelogistic",'template','r',
+    "keyboardlayouteditor","httpsgithubcomswissgeolngmgit","dev","dtilesets","touchdirectly","step","issue","correction","highresolution","find",
+    "derivative","geological","want","scan","supervised","ioloadtestdatalibrarycsvlibquickplot",'information',"level","exponentially","optional",
+    "implied","google","thing","idea","said","timeheterogeneous", "entierty","inferred","tidyverse","detailed","roger","still", "estimation","appearance",
+    "next","ground","opensource","typing","preform","corescannerhypercloud","one","design","et","httpshylitereadthedocsioenlatestindexhtml",
+    "openpit",'installed','scene','templatenotebooks','difficult','setuppy','significantly','benson','even',"referred","compared","lineagecombining",
+    "inverse","daniel","regime","vast","function","functionsuniformsamplingr","factor","fine","equilibrium","length",'myrs','myr','empirical', "doe",
+    "includes","launching","try","ioloadtestdatalibrarycsvlibquickplot","contributing","touchdirectly","generate","multiscale","userhylite","simple",
+    "ioloadtestdatahypercloudplycloudquickplotcloudheadergetcamera","feature","perform","lorenz","respectively","merchantability","order","end","least",
+    "marineeumetazoacsv","window","ubiquity","second","completeness","theoretically","originatorclose","hope","common","operation","similarly","value",
+    "inaccurate","thereby","ioloadtestdatalibrarycsvlibquickplot", "tuned","currently","touchdirectly","unzip","ioloadtestdataimagehdrimagequickplothylitergb",
+    "submit","setuptools","repository","corescannerhypercloud","seamless","commented","prerequisitev","exponentiallydiversifying",
+    "httpswwwgnuorglicenses","consistently","ha","viewed","suggests","slight","introduces","closer","maximum","unfortunately","billie","readme","caper",
+    "restriction"]):
     '''
     Removes stopwords from text, allows for additional words to exclude, or words to not exclude
     '''
@@ -107,8 +134,8 @@ def prep_data(df, column):
     # Adds colum with lenght of word list
     df['doc_length'] = [len(wordlist) for wordlist in df.words]
       # removing unpopular languages 
-    #language_list = ['JavaScript', 'Java', 'HTML', 'Python']
-    #df = df[df.language.isin(language_list)]
+    language_list = ['JavaScript', 'R', 'Python']
+    df = df[df.language.isin(language_list)]
     return df
 
   
