@@ -34,43 +34,40 @@ def create_lang_word_list(train_exp):
     creates a list of words in the readme text by language and removes single letter words
     '''
     # create a list of words for each language category
-    python_words = ' '.join(train_exp[train_exp.language=='Python'].lemmatized)
+    jupyter_words = ' '.join(train_exp[train_exp.language=='Jupyter'].lemmatized)
     js_words = ' '.join(train_exp[train_exp.language=='JavaScript'].lemmatized)
-    html_words = ' '.join(train_exp[train_exp.language=='HTML'].lemmatized)
-    java_words = ' '.join(train_exp[train_exp.language=='Java'].lemmatized)
+    r_words = ' '.join(train_exp[train_exp.language=='R'].lemmatized)
 
     # remove single letter words to reduce noise
-    python_words = re.sub(r'\s.\s', '', python_words)
+    jupyter_words = re.sub(r'\s.\s', '', jupyter_words)
     js_words = re.sub(r'\s.\s', '', js_words)
-    html_words = re.sub(r'\s.\s', '', html_words)
-    java_words = re.sub(r'\s.\s', '', java_words)
-    return python_words, js_words, html_words, java_words
+    r_words = re.sub(r'\s.\s', '', r_words)
+    return jupyter_words, js_words, r_words
 
 
-def get_count_word_freq(python_words, js_words, html_words, java_words):
+def get_count_word_freq(jupyter_words, js_words, r_words):
     '''
     split the list of words and get frequency count
     '''
     # get the count of words by category
-    python_freq = pd.Series(python_words.split()).value_counts()
+    jupyter_freq = pd.Series(jupyter_words.split()).value_counts()
     js_freq = pd.Series(js_words.split()).value_counts()
-    html_freq = pd.Series(html_words.split()).value_counts()
-    java_freq = pd.Series(java_words.split()).value_counts()
-    return python_freq, js_freq, html_freq, java_freq
+    r_freq = pd.Series(r_words.split()).value_counts()
+    return jupyter_freq, js_freq, r_freq
 
 
-def create_df_word_counts(python_freq, js_freq, html_freq, java_freq):
+def create_df_word_counts(jupyter_freq, js_freq, r_freq):
     '''
     combines the frequencies to create new dataframe, word_counts
     '''
     # combine list of word counts into df for further exploration
-    word_counts = (pd.concat([python_freq, js_freq, html_freq, java_freq], axis=1, sort=True)
-                .set_axis(['Python', 'JavaScript', 'HTML', 'Java'], axis=1, inplace=False)
+    word_counts = (pd.concat([jupyter_freq, js_freq, r_freq], axis=1, sort=True)
+                .set_axis(['Jupyter', 'JavaScript', 'R'], axis=1, inplace=False)
                 .fillna(0)
                 .apply(lambda s: s.astype(int))
                 )
     # create a column of all words as well
-    word_counts['all_words'] = word_counts['Python'] + word_counts['JavaScript'] + word_counts['HTML'] + word_counts['Java']
+    word_counts['all_words'] = word_counts['Jupyter'] + word_counts['JavaScript'] + word_counts['R'] 
     return word_counts
 
 
@@ -79,10 +76,9 @@ def word_counts_proportion(word_counts):
     compute proportion of each string that for each language
     '''
     # add columns for each langauge proportion
-    word_counts['prop_python'] = word_counts['Python']/word_counts['all_words']
+    word_counts['prop_jupyter'] = word_counts['Jupyter']/word_counts['all_words']
     word_counts['prop_js'] = word_counts['JavaScript']/word_counts['all_words']
-    word_counts['prop_html'] = word_counts['HTML']/word_counts['all_words']
-    word_counts['prop_java'] = word_counts['Java']/word_counts['all_words']
+    word_counts['prop_r'] = word_counts['R']/word_counts['all_words']
     return word_counts
 
 
@@ -93,15 +89,14 @@ def proportion_visualization(word_counts):
     ## visualize the % of the term in each language
     plt.figure(figsize=(12,8))
     (word_counts
-    .assign(p_python=word_counts.Python / word_counts['all_words'],
+    .assign(p_jupyter=word_counts.Jupyter / word_counts['all_words'],
             p_js=word_counts.JavaScript / word_counts['all_words'],
-            p_html=word_counts.HTML / word_counts['all_words'],
-            p_java=word_counts.Java / word_counts['all_words']
+            p_r=word_counts.R / word_counts['all_words']
             )
     .sort_values(by='all_words')
-    [['p_python', 'p_js', 'p_html', 'p_java']]
+    [['p_jupyter', 'p_js', 'p_r']]
     .tail(20)
-    .sort_values('p_python')
+    .sort_values('p_jupyter')
     .plot.barh(stacked=True))
 
     plt.legend(bbox_to_anchor=(1.05, 1))
@@ -111,49 +106,42 @@ def proportion_visualization(word_counts):
     plt.show()
 
 
-def create_bigrams(python_words, js_words, html_words, java_words):
+def create_bigrams(jupyter_words, js_words, r_words):
     '''
     creates bigrams for each language
     '''
     # create bigrams by category
-    python_bigrams = pd.Series(list(nltk.ngrams(python_words.split(), 2))).value_counts().head(20)
+    jupyter_bigrams = pd.Series(list(nltk.ngrams(jupyter_words.split(), 2))).value_counts().head(20)
     js_bigrams = pd.Series(list(nltk.ngrams(js_words.split(), 2))).value_counts().head(20)
-    html_bigrams = pd.Series(list(nltk.ngrams(html_words.split(), 2))).value_counts().head(20)
-    java_bigrams = pd.Series(list(nltk.ngrams(java_words.split(), 2))).value_counts().head(20)
-    return python_bigrams, js_bigrams, html_bigrams, java_bigrams
+    r_bigrams = pd.Series(list(nltk.ngrams(r_words.split(), 2))).value_counts().head(20)
+    return jupyter_bigrams, js_bigrams, r_bigrams
 
 
-def plot_bigrams(python_bigrams, js_bigrams, html_bigrams, java_bigrams):
-    '''
-    creates subplots of bigrams for each category
-    '''
-    # plot bigrams
-    plt.subplot(2,2,1)
-    python_bigrams.plot.barh(color='red', width=.9, figsize=(10,10))
-    plt.title("20 most frequent Python bigrams")
-    plt.ylabel("Bigram")
-    plt.xlabel("Frequency")
+# def plot_bigrams(jupyter_bigrams, js_bigrams, r_bigrams:
+#     '''
+#     creates subplots of bigrams for each category
+#     '''
+#     # plot bigrams
+#     plt.subplot(4,2,1)
+#     jupyter_bigrams.plot.barh(color='red', width=.9, figsize=(10,10))
+#     plt.title("20 most frequent Jupyter bigrams")
+#     plt.ylabel("Bigram")
+#     plt.xlabel("Frequency")
 
-    plt.subplot(2,2,2)
-    js_bigrams.plot.barh(color='orange', width=.9, figsize=(10,10))
-    plt.title("20 most frequent JavaScript bigrams")
-    plt.ylabel("Bigram")
-    plt.xlabel("Frequency")
+#     plt.subplot(4,2,2)
+#     js_bigrams.plot.barh(color='orange', width=.9, figsize=(10,10))
+#     plt.title("20 most frequent JavaScript bigrams")
+#     plt.ylabel("Bigram")
+#     plt.xlabel("Frequency")
 
-    plt.subplot(2,2,3)
-    html_bigrams.plot.barh(color='blue', width=.9, figsize=(10,10))
-    plt.title("20 most frequent HTML bigrams")
-    plt.ylabel("Bigram")
-    plt.xlabel("Frequency")
+#     plt.subplot(4,2,3)
+#     r_bigrams.plot.barh(color='blue', width=.9, figsize=(10,10))
+#     plt.title("20 most frequent R bigrams")
+#     plt.ylabel("Bigram")
+#     plt.xlabel("Frequency")
 
-    plt.subplot(2,2,4)
-    java_bigrams.plot.barh(color='green', width=.9, figsize=(10,10))
-    plt.title("20 most frequent Java bigrams")
-    plt.ylabel("Bigram")
-    plt.xlabel("Frequency")
-
-    plt.tight_layout()
-    plt.show()
+#     plt.tight_layout()
+#     plt.show()
 
 
 def sns_boxplot(train_exp):

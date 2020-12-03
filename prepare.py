@@ -22,6 +22,8 @@ def basic_clean(text):
     recode = unicodedata.normalize('NFKD', low_case).encode('ascii', 'ignore').decode('utf-8', 'ignore')
     # Replace anything that is not a letter, number, whitespace or a single quote
     cleaned = re.sub(r"[^a-z0-9'\s]", '', recode)
+    # Remove numbers from text
+    cleaned = re.sub(r'\d+', '', cleaned)
     return cleaned
 
 def tokenize(text):
@@ -52,7 +54,10 @@ def lemmatize(text):
     article_lemmatized = ' '.join(lemmas)
     return article_lemmatized
 
-def remove_stopwords(text, extra_words=[], exclude_words=[]):
+def remove_stopwords(text, extra_words=[], exclude_words=["accuracy","accurate","acknowledgement","acquired",
+    "adhere","adheres","along","also","accessing","provided",
+    "directory", "datasets","including","pip","problem","pull",
+    "python"]):
     '''
     Removes stopwords from text, allows for additional words to exclude, or words to not exclude
     '''
