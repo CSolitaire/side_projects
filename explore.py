@@ -19,24 +19,24 @@ def set_plotting_defaults():
 
 ####### NLP ########
 
-def check_proportion(train_exp):
+def check_proportion(df):
     '''
     creates dataframe that shows the proportion of observations in each language
     '''
-    labels = pd.concat([train_exp.language.value_counts(), # get total counts of languages
-                        train_exp.language.value_counts(normalize=True)], axis=1) # getting the prop of languages
+    labels = pd.concat([df.language.value_counts(), # get total counts of languages
+                        df.language.value_counts(normalize=True)], axis=1) # getting the prop of languages
     labels.columns = ['n', 'percent']
     return labels
 
 
-def create_lang_word_list(train_exp):
+def create_lang_word_list(df):
     '''
     creates a list of words in the readme text by language and removes single letter words
     '''
     # create a list of words for each language category
-    jupyter_words = ' '.join(train_exp[train_exp.language=='Jupyter'].text_filtered)
-    js_words = ' '.join(train_exp[train_exp.language=='JavaScript'].text_filtered)
-    r_words = ' '.join(train_exp[train_exp.language=='R'].text_filtered)
+    jupyter_words = ' '.join(df[df.language=='Jupyter Notebook'].text_filtered)
+    js_words = ' '.join(df[df.language=='JavaScript'].text_filtered)
+    r_words = ' '.join(df[df.language=='R'].text_filtered)
 
     # remove single letter words to reduce noise
     jupyter_words = re.sub(r'\s.\s', '', jupyter_words)
